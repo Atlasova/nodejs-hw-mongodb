@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getContactsController,
+  getAllContactsController,
   getContactByIdController,
   addContactController,
   patchContactController,
@@ -20,7 +20,7 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get('/', ctrlWrapper(getContactsController));
+router.get('/', ctrlWrapper(getAllContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
 
 router.post(
