@@ -45,16 +45,17 @@ export const getContacts = async ({
     ...paginationData,
   };
 };
+
 export const getContactById = (id) => ContactsCollection.findById(id);
 
 export const getContact = (filter) => ContactsCollection.findOne(filter);
 
 export const addContact = (payload) => ContactsCollection.create(payload);
 
-export const pathContact = (filter, payload) => {
+export const patchContact = (filter, payload) => {
   const result = ContactsCollection.findOneAndUpdate(filter, payload, {});
   return result;
 };
 
 export const deleteContact = (filter) =>
-  ContactsCollection.findByIdAndDelete(filter);
+  ContactsCollection.findOneAndDelete(filter);

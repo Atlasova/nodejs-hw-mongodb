@@ -11,7 +11,7 @@ export const getContactsController = async (req, res) => {
   const filter = parseFilterParams(req.query);
   filter.userId = req.user._id;
 
-  const contacts = await contactsServices.getContact({
+  const contacts = await contactsServices.getContacts({
     page,
     perPage,
     sortBy,
@@ -55,8 +55,8 @@ export const addContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
-  const { _id: userId } = req.user;
   const { contactId: _id } = req.params;
+  const { _id: userId } = req.user;
 
   const result = await contactsServices.patchContact({ _id, userId }, req.body);
   if (!result) {
