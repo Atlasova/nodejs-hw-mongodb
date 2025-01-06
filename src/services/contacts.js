@@ -25,7 +25,8 @@ export const getAllContacts = async ({
   const contacts = await contactsQuery
     .skip(skip)
     .limit(limit)
-    .sort({ [sortBy]: sortOrder });
+    .sort({ [sortBy]: sortOrder })
+    .exec();
 
   const contactsCount = await ContactsCollection.find()
     .merge(contactsQuery)
