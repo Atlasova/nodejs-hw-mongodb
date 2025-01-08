@@ -22,27 +22,26 @@ export const getAllContacts = async ({
   if (filter.userId) {
     contactsQuery.where('userId').equals(filter.userId);
   }
+
+  const contactsCount = await ContactsCollection.find()
+    .merge(contactsQuery)
+    .countDocuments();
+
   const contacts = await contactsQuery
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder })
     .exec();
 
-  const contactsCount = await ContactsCollection.find()
-    .merge(contactsQuery)
-    .countDocuments();
+  const paginationData = calculatePaginationData(contactsCount, perPage, page);
 
-  const paginationData = calculatePaginationData({
-    contactsCount,
-    perPage,
-    page,
-  });
+  console.log('Pagination Data:', paginationData);
 
   return {
-    contacts,
-    page,
-    perPage,
-    contactsCount,
+    data: contacts,
+    // page,
+    // perPage,
+    // contactsCount,
     ...paginationData,
   };
 };
