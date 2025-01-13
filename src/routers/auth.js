@@ -5,6 +5,9 @@ import { registerUserSchema } from '../validation/auth.js';
 import { loginUserSchema } from '../validation/auth.js';
 import * as authController from '../controllers/auth.js';
 
+import { requestResetEmailSchema } from '../validation/auth.js';
+import { resetPasswordSchema } from '../validation/auth.js';
+
 const router = Router();
 
 router.post(
@@ -25,5 +28,19 @@ router.post(
 );
 
 router.post('/logout', ctrlWrapper(authController.logoutUserController));
+
+//Опишемо роут для скидання паролю через емейл:
+router.post(
+  '/send-reset-email',
+  validateBody(requestResetEmailSchema),
+  ctrlWrapper(authController.requestResetEmailController),
+);
+
+//Зміна пароля
+router.post(
+  '/reset-pwd',
+  validateBody(resetPasswordSchema),
+  ctrlWrapper(authController.resetPasswordController),
+);
 
 export default router;
