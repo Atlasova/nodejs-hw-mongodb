@@ -5,6 +5,10 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { env } from '../utils/env.js';
+
 export const getAllContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
@@ -42,10 +46,25 @@ export const getContactByIdController = async (req, res) => {
     data: contact,
   });
 };
-
+//POST
 export const addContactController = async (req, res) => {
   const { _id: userId } = req.user;
-  const contact = await contactsServices.addContact({ ...req.body, userId });
+
+  let photo;
+
+  if (req.file) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photo = await saveFileToCloudinary(req.file);
+    } else {
+      photo = await saveFileToUploadDir(req.file);
+    }
+  }
+
+  const contact = await contactsServices.addContact({
+    ...req.body,
+    userId,
+    photo,
+  });
 
   res.status(201).json({
     status: 201,
@@ -53,19 +72,36 @@ export const addContactController = async (req, res) => {
     data: contact,
   });
 };
-
+//PATCH
 export const patchContactController = async (req, res) => {
   const { contactId: _id } = req.params;
   const { _id: userId } = req.user;
+  //const cloudinaryEnable = env('ENABLE_CLOUDINARY') === 'true';
 
-  const contact = await contactsServices.patchContact(
+  let photo;
+
+  if (req.file) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      //if (cloudinaryEnable) {
+      photo = await saveFileToCloudinary(req.file);
+    } else {
+      photo = await saveFileToUploadDir(req.file);
+    }
+  }
+
+  const result = await contactsServices.patchContact(
     { _id, userId },
-    req.body,
+    { ...req.body, photo },
   );
+
+  if (!result) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
   res.json({
     status: 200,
     message: `Successfully patched a contact!`,
-    data: contact,
+    data: result,
   });
 };
 

@@ -12,7 +12,6 @@ import {
 
 import jwt from 'jsonwebtoken';
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
-//create getEnvVar in env
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 
@@ -96,10 +95,6 @@ export const getSession = (filter) => SessionsCollection.findOne(filter);
 
 export const getUser = (filter) => UsersCollection.findOne(filter);
 
-//створимо сервісну функцію
-//створити сервіс для надсилання повідомлень:
-//не вдалося надіслати листа (за допомогою http-errors створіть помилку зі статусом 500 і повідомленням "Failed to send the email, please try again later.").
-
 export const requestResetToken = async (email) => {
   const user = await UsersCollection.findOne({ email });
   if (!user) {
@@ -110,7 +105,7 @@ export const requestResetToken = async (email) => {
       sub: user._id,
       email,
     },
-    //create
+
     env('JWT_SECRET'),
     {
       expiresIn: '5m',
@@ -146,7 +141,7 @@ export const requestResetToken = async (email) => {
     );
   }
 };
-//Зміна пароля, встановити новий пароль, використовуючи токен, що приходить користувачу на пошту:
+
 export const resetPassword = async (payload) => {
   let entries;
 

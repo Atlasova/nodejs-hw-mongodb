@@ -66,7 +66,6 @@ export const logoutUserController = async (req, res) => {
   res.status(204).send();
 };
 
-//Крок 3
 export const requestResetEmailController = async (req, res) => {
   await authServices.requestResetToken(req.body.email);
 
@@ -77,7 +76,6 @@ export const requestResetEmailController = async (req, res) => {
   });
 };
 
-//Зміна пароля Крок 4
 export const resetPasswordController = async (req, res) => {
   await authServices.resetPassword(req.body);
   res.json({

@@ -29,14 +29,12 @@ router.post(
 
 router.post('/logout', ctrlWrapper(authController.logoutUserController));
 
-//Опишемо роут для скидання паролю через емейл:
 router.post(
   '/send-reset-email',
   validateBody(requestResetEmailSchema),
   ctrlWrapper(authController.requestResetEmailController),
 );
 
-//Зміна пароля
 router.post(
   '/reset-pwd',
   validateBody(resetPasswordSchema),
