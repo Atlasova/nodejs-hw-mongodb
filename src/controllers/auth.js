@@ -86,7 +86,7 @@ export const resetPasswordController = async (req, res) => {
   });
 };
 
-//Організуємо роут для отримання посилання авторизації.
+
 export const getGoogleOAuthUrlController = async (req, res) => {
   const url = generateAuthUrl();
   res.json({
@@ -97,7 +97,7 @@ export const getGoogleOAuthUrlController = async (req, res) => {
     },
   });
 };
-//!!!Створимо контролер:
+
 export const loginWithGoogleController = async (req, res) => {
   const session = await authServices.loginOrSignupWithGoogle(req.body.code);
   setupSession(res, session);

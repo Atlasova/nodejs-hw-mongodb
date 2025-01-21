@@ -42,13 +42,13 @@ router.post(
   validateBody(resetPasswordSchema),
   ctrlWrapper(authController.resetPasswordController),
 );
-//
+
 router.post(
   '/confirm-oauth',
   validateBody(loginWithGoogleOAuthSchema),
   ctrlWrapper(authController.loginWithGoogleController),
 );
-//Організуємо роут для отримання посилання авторизації.
+
 router.get(
   '/get-oauth-url',
   ctrlWrapper(authController.getGoogleOAuthUrlController),
