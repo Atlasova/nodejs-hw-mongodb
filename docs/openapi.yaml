@@ -11,7 +11,7 @@ tags:
     description: Operations about users.
 servers:
   - url: http://localhost:3000
-  #посилання на задеплоєний сайт
+  - url: https://nodejs-hw-mongodb-swagger-k04c.onrender.com
 paths:
   /contacts:
     get:
